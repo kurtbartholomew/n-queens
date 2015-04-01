@@ -125,8 +125,11 @@
     hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
       var total = 0;
       var currentArray = this.rows();
-      for(var row = 0,col = majorDiagonalColumnIndexAtFirstRow; row < this.get('n') && col < this.get('n'); row++,col++) {
-        total += currentArray[row][col];
+      var boundary = this.get('n');
+      for(var row = 0,col = majorDiagonalColumnIndexAtFirstRow; row < boundary && col < boundary; row++,col++) {
+        if (currentArray[row][col] !== undefined) {
+          total += currentArray[row][col];
+        }
         if(total > 1) {
           return true;
         }
@@ -136,7 +139,7 @@
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
-      for (var i = 0; i < this.get('n'); i++) {
+      for (var i = -(this.get('n')); i < this.get('n'); i++) {
         if (this.hasMajorDiagonalConflictAt(i)) {
           return true;
         }
@@ -153,8 +156,11 @@
     hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow) {
       var total = 0;
       var currentArray = this.rows();
-      for(var row = 0,col = minorDiagonalColumnIndexAtFirstRow; row < this.get('n') && col >= 0; row++,col--) {
-        total += currentArray[row][col];
+      var boundary = this.get('n');
+      for(var row = 0,col = minorDiagonalColumnIndexAtFirstRow; row < boundary && col >= 0; row++,col--) {
+        if (currentArray[row][col] !== undefined){
+          total += currentArray[row][col];
+        }
         if(total > 1) {
           return true;
         }
@@ -164,7 +170,7 @@
 
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function() {
-      for (var i = 0; i < this.get('n'); i++) {
+      for (var i = 0; i < this.get('n') * 2; i++) {
         if (this.hasMinorDiagonalConflictAt(i)) {
           return true;
         }
