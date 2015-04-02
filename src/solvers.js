@@ -12,81 +12,53 @@
 
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n rooks placed such that none of them can attack each other
-
 window.findNRooksSolution = function(n) {
   n = n || 4;
-  var results = [];
-  for (var i = 0; i < n; i++) {
-    results.push([]);
-    for (var j = 0; j < n; j++) {
-      if (i === j) {
-        results[i][j] = 1;
-      } else {
-        results[i][j] = 0;
+  var board = new Board({'n':n});
+  var rooks = _.range(n);
+
+  var solutions = function(rooks) {
+    if (rooks.length === 0) {
+      return board.rows()
+    } else {
+      for (var i = 0; i < n; i++) {
+        board.togglePiece(rooks[0], i);
+        if (board.hasRookConflicts()) {
+          board.togglePiece(rooks[0], i);
+        } else {
+          rooks.pop();
+        }
       }
+
     }
-  }
+  };
 
-  /* DEREK'S MESS
-  // var board = new Array(n * n);
-  // var tracker = _.range(n * n);
-  // for (var rook = 0; rook < n; rook++) {
-  //   var current = tracker[Math.floor(Math.random() * tracker.length)];
-  //   board[current] = 1;
-  //   tracker.splice(current, 1);
-  //   var column = current % n;
-  //   var rowStart = current - column;
-  //   for (var i = rowStart; i < rowStart + n; i++) {
-  //     if (i !== current) {
-  //       board[i] = 0;
-  //       tracker.splice(i, 1);
-  //     }
+
+
+  return board.rows();
+
+  // var outcomes = [];
+  // var board = new Board({'n':n});
+  // console.dir(board.rows());
+  // var rooks = _.range(n);
+  // var solutions = function(rooks) {
+  //   if (rooks === 0) {
+  //     outcomes.push(board.rows());
+  //     return;
   //   }
-  //   for (var i = column; i < board.length; i += n) {
-  //     if (i !== current) {
-  //       board[i] = 0;
-  //       tracker.splice(i, 1);
-  //     }
-  //   }
-  //   console.log(board);
-  // }
-  // var results = [];
-  // for (var i = 0; i < n; i++) {
-  //   results[i] = [];
-  //   for (var j = 0; j < n; j++) {
-  //     results[i].push(board[i * n + j]);
-  //   }
-  // }
-  // console.log(board);
-  // return results;
-  ******************/
-
-
-
-  // function checkCurrentSolution (row){
-
-  //   if (row === n) {
-  //     return this.rows();
-  //   }
-  //   for(var i = 0; i < row.length; i++) {
-  //     this.rows()[row][i] = 1;
-  //     if(this.hasAnyRooksConflicts()) {
-  //       if(checkCurrentSolution(row+1) === true) {
-  //         return true;
+  //   for (var i = 0; i < rooks.length; i++) {
+  //     for (var j = 0; j < n; j++) {
+  //       board.togglePiece(i, j);
+  //       if (board.hasRookConflicts()) {
+  //         board.togglePiece(i, j);
   //       }
-  //       this.rows()[row][i] = 0;
   //     }
+  //     rooks.pop();
+  //     solutions(rooks - 1);
   //   }
-  //   return false;
-
-  // }
-
-
-  // if(checkCurrentSolution(0)){
-  //   console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
-  //   return solution;
-  // }
-  // return null;
+  // };
+  // console.log(outcomes);
+  // return outcomes[0];
 };
 
 
