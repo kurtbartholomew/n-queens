@@ -66,57 +66,34 @@ window.countNRooksSolutions = function(n) {
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
 window.findNQueensSolution = function(n) {
-  n = n || 4;
-  // var outcomes = [];
-  // var board = new Board({'n':n});
-  // var solutionsNum = 0;
-
-  // var solutions = function(row) {
-  //   if (row === n) {
-  //     solutionsNum++;
-  //     outcomes.push(board.rows());
-  //     return true;
-  //   }
-  //   for(var i = 0; i < n; i++) {
-  //     board.togglePiece(row,i);
-  //     if(!board.hasAnyQueensConflicts()) {
-  //       if(solutions(row+1) === true) {
-  //         return true;
-  //       }
-  //     }
-  //     board.togglePiece(row,i);
-  //   }
-  //   return false;
-  // };
-  // solutions(0);
-  // return outcomes[0];
-
   var outcomes = [];
   var board = new Board({'n':n});
   var solutionsNum = 0;
+
+  if (n === 2 || n === 3) {
+    return board.rows();
+  }
+
   var solutions = function(row) {
     if (row === n) {
       solutionsNum++;
-      console.log(JSON.stringify(board.rows()));
-      console.log("\n");
-      console.log("solution found: ",solutionsNum);
       outcomes.push(board.rows());
-      return;
+      return true;
     }
     for(var i = 0; i < n; i++) {
       board.togglePiece(row,i);
       if(!board.hasAnyQueensConflicts()) {
-        solutions(row+1);
+        if(solutions(row+1) === true) {
+          return true;
+        }
       }
       board.togglePiece(row,i);
     }
     return false;
   };
   solutions(0);
-  //console.log('Single solution for ' + n + ' rooks:', JSON.stringify(outcomes[0]));
-  console.log('Single solution for ' + n + ' queens:', JSON.stringify(outcomes[0]));
+  //debugger;
   return outcomes[0];
-  // return solution;
 };
 
 
